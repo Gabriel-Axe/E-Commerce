@@ -5,19 +5,22 @@ namespace ECommerce.Data
 {
 	public class ECommerceDbContext : DbContext
 	{
-		public ECommerceDbContext(DbContextOptions<DbContext> options) : base(options)
+		public ECommerceDbContext(DbContextOptions<ECommerceDbContext> options) : base(options) { }
+
+		public DbSet<User> Users { get; }
+		public DbSet<Shop> Shops { get; }
+		public DbSet<Product> Products { get; }
+
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
+			base.OnConfiguring(optionsBuilder);
 		}
 
-		public DbSet<User> Users { get; set; }
-		public DbSet<Shop> Shops { get; set; }
-		public DbSet<Product> Products { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-					modelBuilder.Entity<User>().ToTable("Users");
-					modelBuilder.Entity<Shop>().ToTable("Shops");
-					modelBuilder.Entity<Product>().ToTable("Products");
-        }
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			modelBuilder.Entity<User>().ToTable("Users");
+			modelBuilder.Entity<Shop>().ToTable("Shops");
+			modelBuilder.Entity<Product>().ToTable("Products");
+		}
 	}
 }

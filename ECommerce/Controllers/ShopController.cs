@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
 using ECommerce.Models;
-using ECommerce.Dtos;
-using ECommerce.Services;
 using ECommerce.Data;
 using ECommerce.Dtos.Response;
 using ECommerce.Dtos.Request;
@@ -16,24 +14,18 @@ namespace ECommerce.Controllers
 	{
 
 		private readonly ShopContext _db;
-		// private readonly ILogger<ShopManagementController> _logger;
-		// private InMemoryDb<Product> productsDb;
-		// private readonly ShopServices services;
+		private readonly ILogger<ShopManagementController> _logger;
 
-		public ShopManagementController(ShopContext db)
+		public ShopManagementController(ShopContext db, ILogger<ShopManagementController> logger)
 		{
+			this._logger = logger;
 			this._db = db;
 			this._db.Database.EnsureCreated();
 		}
 
-		// [HttpGet("/{id}")]
-		// public ActionResult<ShopInfo> FindShopWithId(long shopId)
-		// [HttpGet("{id:long}")]
-		// [Route("Home/About/{id}")]
 		[HttpGet("{id}")]
 		public ActionResult FindShopWithId(long id)
 		{
-			// using var shopDb = new ShopContext();
 			var found_shop = from shopRecord in this._db.Shops
 											 where shopRecord.Id == id
 											 select shopRecord;
@@ -46,7 +38,6 @@ namespace ECommerce.Controllers
 		[HttpPost]
 		public ActionResult<ShopInfo> CreateShop(CreateShop request)
 		{
-			// using var db = new ShopContext();
 			var newShop = new Shop(name: request.name);
 			this._db.Add(newShop);
 			this._db.SaveChanges();
@@ -66,7 +57,6 @@ namespace ECommerce.Controllers
 		[HttpDelete("{id}")]
 		public ActionResult DeleteShop(long id)
 		{
-			// using var db = new ShopContext();
 			var found_shop = from shopRecord in this._db.Shops
 											 where shopRecord.Id == id
 											 select shopRecord;
@@ -76,11 +66,5 @@ namespace ECommerce.Controllers
 
 			return Ok(new ShopInfo(shop));
 		}
-
-		// public ShopManagementController(ILogger<ShopManagementController> logger, InMemoryDb<Product> productsDb)
-		// {
-		// 	this._logger = logger;
-		// 	this.productsDb = productsDb;
-		// }
 	}
 }
