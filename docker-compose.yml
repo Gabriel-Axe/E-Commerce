@@ -1,0 +1,46 @@
+services:
+  api:
+    build: .
+    container_name: shop_api
+    ports:
+      - "5178:5178"
+    environment:
+      ASPNETCORE_URLS: http://+:5178
+      ConnectionStrings__DefaultConnection: "Server=db;Database=shopdb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
+    depends_on:
+      - db
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: shop_db
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "YourStrong!Passw0rd"
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql_data:/var/opt/mssql
+
+volumes:
+  mssql_data:
+
+# How to add new services:
+# Just add another service to the YAML:
+#
+# user-service:
+#   build: ./UserService
+#   ports:
+#     - "8081:8080"
+#   depends_on:
+#     - db
+#
+#
+# Each service can have:
+#
+# its own DB
+#
+# its own ports
+#
+# its own environment variables
+#
+# its own network (or shared)
