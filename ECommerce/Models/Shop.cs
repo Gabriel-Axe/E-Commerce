@@ -1,28 +1,14 @@
 using System.ComponentModel.DataAnnotations;
-using System.Numerics;
 using ECommerce.Dtos;
-using ECommerce.Dtos.Request;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECommerce.Models
+namespace ECommerce.Models.Shop
 {
 	[PrimaryKey(nameof(Id))]
-	public sealed class Shop
+	public sealed class Shop(long Id, string Name)
 	{
-		[Key]
-		public long Id { get; private set; }
-		public string Name { get; private set; }
-		public List<Product> Prodcts { get; } = new();
-
-		// FIXME: 
-		// > Should not be held in memory
-		// > Should be created proper structure to hold this
-		public List<int> reviews { get; } = new();
-
-		public Shop() { }
-
-		public Shop(CreateShop request) : this(request.name) { }
-
-		public Shop(string name) { this.Name = name; }
+		public long Id { get; set; } = Id;
+		public string Name { get; set; } = Name;
+		public List<Product> Prodcts { get; set; } = new();
 	}
 }
