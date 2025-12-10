@@ -1,17 +1,39 @@
-using ECommerce.Data;
-using ECommerce.Dtos;
+using ECommerce.Dtos.Request.Create;
+using ECommerce.Dtos.Request.Update;
 using ECommerce.Dtos.Response;
-using ECommerce.Models;
-
+using ECommerce.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Controllers
 {
 	[ApiController]
 	[Route("api/users")]
-	public class UserController(ECommerceDbContext db, ILogger<UserController> logger) : ControllerBase
+	public class UserController(ILogger<UserController> _logger, UserService _service) : ControllerBase
 	{
-		private readonly ECommerceDbContext _db = db;
-		private readonly ILogger<UserController> _logger = logger;
+		[HttpGet]
+		public ActionResult<ResponseUser> CreateUser(CreateUserRequest request)
+		{
+			var response = _service.CreateUser(request);
+			return Ok(response);
+		}
+
+		[HttpPut("{id:long}")]
+		public ActionResult<ResponseUser> UpdateUser(long id, UpdateUserRequest request)
+		{
+			var response = _service.UpdateUser(id, request);
+			return Ok(response);
+		}
+
+		public ActionResult<ResponseUser> GetUserById(long id)
+		{
+			var response = _service.GetUser(id);
+			return Ok(response);
+		}
+
+		public ActionResult DeleteUser(long id)
+		{
+			_service.DeleteUser(id);
+			return NoContent();
+		}
 	}
 }
