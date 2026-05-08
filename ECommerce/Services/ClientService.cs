@@ -1,9 +1,7 @@
-using ECommerce.Data;
 using ECommerce.Dtos.Request.Create;
 using ECommerce.Dtos.Response;
 using ECommerce.Models;
 using ECommerce.Dtos.Request.Update;
-using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Services
 {
